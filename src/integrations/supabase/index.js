@@ -46,13 +46,20 @@ Venue // table: venues
     updated_at: string
     events?: Event[] // available if .select('*,events(*)') was done
 
+User // table: users
+    id: number
+    created_at: string
+    username: string
+    email: string
+    events?: Event[] // available if .select('*,events(*)') was done
+
 */
 
 // hooks
 
 export const useEvents = () => useQuery({
     queryKey: ['events'],
-    queryFn: () => fromSupabase(supabase.from('events').select('*,comments(*)')),
+    queryFn: () => fromSupabase(supabase.from('events').select('*,comments(*),venues(*),users(*)')),
 });
 
 export const useAddEvent = () => {
@@ -91,6 +98,21 @@ export const useAddVenue = () => {
         mutationFn: (newVenue) => fromSupabase(supabase.from('venues').insert([newVenue])),
         onSuccess: () => {
             queryClient.invalidateQueries('venues');
+        },
+    });
+};
+
+export const useUsers = () => useQuery({
+    queryKey: ['users'],
+    queryFn: () => fromSupabase(supabase.from('users').select('*,events(*)')),
+});
+
+export const useAddUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newUser) => fromSupabase(supabase.from('users').insert([newUser])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('users');
         },
     });
 };

@@ -16,10 +16,10 @@ const theme = extendTheme({ colors });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <SupabaseProvider>
-      <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>
+      <SupabaseProvider>
         <App />
-      </ChakraProvider>
-    </SupabaseProvider>
+      </SupabaseProvider>
+    </ChakraProvider>
   </React.StrictMode>
 );
