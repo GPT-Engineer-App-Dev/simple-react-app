@@ -1,7 +1,7 @@
-import { Box, Container, Flex, Text, VStack, Input, Button } from "@chakra-ui/react";
+import { Box, Container, Flex, Text, VStack, Input, Button, Link } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAddVenue } from "../integrations/supabase/index.js";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const AddVenue = () => {
   const [name, setName] = useState("");
