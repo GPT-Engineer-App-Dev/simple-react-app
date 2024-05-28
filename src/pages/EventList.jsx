@@ -1,33 +1,36 @@
 import { Box, Container, Flex, Text, VStack, Link } from "@chakra-ui/react";
+import { useEvents } from "../integrations/supabase/index.js";
 import { Link as RouterLink } from "react-router-dom";
 
-const Index = () => {
+const EventList = () => {
+  const { data: events, error, isLoading } = useEvents();
+
+  if (isLoading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error loading events</Text>;
+
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
-      {/* Navigation Bar */}
       <Box as="nav" bg="brand.800" color="white" py={4}>
         <Container maxW="container.lg">
           <Flex justify="space-between" align="center">
-            <Text fontSize="xl" fontWeight="bold">My Website</Text>
+            <Text fontSize="xl" fontWeight="bold">Events</Text>
             <Flex>
               <Link as={RouterLink} to="/" mx={2}>Home</Link>
-              <Link as={RouterLink} to="/events" mx={2}>Events</Link>
-              <Link as={RouterLink} to="#" mx={2}>About</Link>
-              <Link as={RouterLink} to="#" mx={2}>Contact</Link>
             </Flex>
           </Flex>
         </Container>
       </Box>
 
-      {/* Main Content Area */}
       <Container maxW="container.lg" flex="1" py={8}>
         <VStack spacing={4}>
-          <Text fontSize="2xl">Welcome to My Website</Text>
-          <Text>This is a basic structure of a React app with Chakra UI.</Text>
+          {events.map(event => (
+            <Link as={RouterLink} to={`/events/${event.id}`} key={event.id}>
+              <Text fontSize="2xl">{event.name}</Text>
+            </Link>
+          ))}
         </VStack>
       </Container>
 
-      {/* Footer */}
       <Box as="footer" bg="brand.900" color="white" py={4}>
         <Container maxW="container.lg">
           <Text textAlign="center">&copy; 2023 My Website. All rights reserved.</Text>
@@ -37,4 +40,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default EventList;
